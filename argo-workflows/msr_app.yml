@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: msrapp-elt-job-
+  name: msrapp-elt-job
 spec:
   entrypoint: workflow
   templates:
