@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: dbt
+spec:
+  entrypoint: dbt-runner
+  arguments:
+    parameters:
+      - name: dbt_selector
+        value: cohort_insights
+  templates:
+    - name: dbt-runner
+      inputs:
+        parameters:
+          - name: dbt_selector
+      container:
+        image: docker/whalesay
+        command: [ cowsay ]
+        args: ["dbt",  "run", "--selector", "{{ inputs.parameters.dbt_selector }}"]

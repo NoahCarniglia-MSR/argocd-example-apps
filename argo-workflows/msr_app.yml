@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: msrapp-elt-job-
+spec:
+  entrypoint: workflow
+  templates:
+  - name: workflow
+    dag:
+      tasks:
+        - name: call-pipelinewise-template
+          templateRef:
+            name: pipelinewise
+            template: pipelinewise-runner
+          arguments:
+            parameters:
+              - name: tap
+                value: mysql_db
+              - name: target
+                value: snowflake-load
+        - name: call-dbt-template
+          dependencies: [call-pipelinewise-template]
+          templateRef:
+            name: dbt
+            template: dbt-runner
+          arguments:
+            parameters:
+              - name: dbt_selector
+                value: "core"

@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: pipelinewise
+spec:
+  templates:
+    - name: pipelinewise-runner
+      inputs:
+        parameters:
+          - name: tap
+          - name: target
+      container:
+        image: docker/whalesay
+        command: [ cowsay ]
+        args: [
+          "pipelinewise",
+          "sync_tables",
+          "--tap",
+          "{{ inputs.parameters.tap }}",
+          "--target",
+          "{{ inputs.parameters.target }}"
+        ]
